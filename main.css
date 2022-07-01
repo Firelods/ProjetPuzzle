@@ -1,0 +1,22 @@
+*{
+    font-family: "Roboto";
+    margin:0;
+    padding:0;
+}
+
+.puzzleContainer{
+    width: 1250px;
+    height:1000px;
+    background-color:grey;
+    display: flex;
+    align-content: flex-start;
+    flex-wrap: wrap;
+    position: relative;
+    margin-bottom: 50px;
+}
+
+.puzzlePiece{
+    position: absolute;
+    display: inline-block;
+}
+

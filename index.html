@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://pixijs.download/release/pixi.js"></script>
+    <script src="./decoupagePuzzle.js"></script>
+    <link rel="stylesheet" href="./main.css">
+    <title>Puzzle En FR !</title>
+</head>
+<body>
+    <h1>Debut du projet puzzle ! </h1>
+    <button onclick="var newP=new Puzzle(100); newP.decoupagePuzzle();newP.genererEmplacement();">cliquer pour transformer</button>
+    <!-- <input id="fichierImage" type="file" /> <label for=""> Choisissez l'image a transformer en puzzle</label> -->
+        <div  id="puzzle" class="puzzleContainer"><img style="display:none;" src="./1.png" id="i" alt="imgPuzzle"></div>
+    <button onclick="newP.genererEmplacement()">genererEmplacement</button>
+        <div id="puzzleSolver" class="puzzleContainer"></div>
+
+    <script src="./main.js"></script>
+    <button onclick="randomize();">Randomize</button>
+</body>
+</html>
