@@ -7,18 +7,21 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://pixijs.download/release/pixi.js"></script>
     <script src="./decoupagePuzzle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zoomooz/1.1.6/jquery.zoomooz.min.js" integrity="sha512-AjArtM7mKvqtbUJTylYXhk5TUfmK1o6aikn3HmkbuYlq+g5vcuzGGZhIsx7ZDHF9wMXjF7bLWoOTRQlW8O5i4Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/screenfull.js/5.1.0/screenfull.min.js" integrity="sha512-SGPHIoS+NsP1NUL5RohNpDs44JlF36tXLN6H3Cw+EUyenEc5zPXWqfw9D+xmvR00QYUYewQIJQ6P5yH82Vw6Fg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="./main.css">
     <title>Puzzle En FR !</title>
 </head>
 <body>
-    <h1>Debut du projet puzzle ! </h1>
-    <button onclick="var newP=new Puzzle(100); newP.decoupagePuzzle();newP.genererEmplacement();">cliquer pour transformer</button>
+    <!-- <h1>Debut du projet puzzle ! </h1> -->
+    <!-- <button onclick="var newP=new Puzzle(100); newP.decoupagePuzzle();newP.genererEmplacement();">cliquer pour transformer</button> -->
     <!-- <input id="fichierImage" type="file" /> <label for=""> Choisissez l'image a transformer en puzzle</label> -->
-        <div  id="puzzle" class="puzzleContainer"><img style="display:none;" src="./1.png" id="i" alt="imgPuzzle"></div>
-    <button onclick="newP.genererEmplacement()">genererEmplacement</button>
-        <div id="puzzleSolver" class="puzzleContainer"></div>
-
-    <script src="./main.js"></script>
-    <button onclick="randomize();">Randomize</button>
+    <!-- <div id="puzzle" class="puzzleContainer"><img  src="./1.png" id="i" alt="imgPuzzle"></div> -->
+    <!-- <button onclick="newP.genererEmplacement()">genererEmplacement</button>
+    <div id="puzzleSolver" class="puzzleContainer"></div> -->
+    <!-- <canvas id="puzzleSolver"></canvas> -->
+    <div id="parentPuzzle"></div>
+    <script type="module" src="./main.js"></script>
+    <!-- <button onclick="randomize();">Randomize</button> -->
 </body>
 </html>
