@@ -1,56 +1,4 @@
 
-/*
-const app = new PIXI.Application({
-    autoResize: true,
-    resolution: devicePixelRatio
-});
-document.getElementById("parentPuzzle").appendChild(app.view);
-window.addEventListener('resize', resize);
-
-// Resize function window
-function resize() {
-    let parent = document.getElementById("parentPuzzle");
-    // Resize the renderer
-    app.renderer.resize(parent.clientWidth, parent.clientHeight);
-
-    // You can use the 'screen' property as the renderer visible
-    // area, this is more useful than view.width/height because
-    // it handles resolution
-    // rect.position.set(app.screen.width, app.screen.height);
-}
-
-resize();
-
-let DIFFICULTE = 120;
-
-class Piece {
-    constructor(id, x, y, width, sprite, leftSide, rightSide, topSide, bottomSide) {
-        this.id = id;
-        this.x = -1;
-        this.y = -1;
-        this.originalX = x;
-        this.originalY = y;
-        this.width = width;
-        this.sprite = sprite;
-        this.leftSide = leftSide;
-        this.rightSide = rightSide;
-        this.topSide = topSide;
-        this.bottomSide = bottomSide;
-    }
-}
-
-var baseTexture = new PIXI.BaseTexture.from("1.png");
-// console.log(i+" "+j);
-var texture = new PIXI.Texture(baseTexture, new PIXI.Rectangle(10, 10, DIFFICULTE, DIFFICULTE));
-var sprite2 = new PIXI.Sprite(texture);
-sprite2.x = 50;
-sprite2.y = 50;
-sprite2.interactive = true;
-var piece = new Piece(1, 10, 10, DIFFICULTE, sprite2, 0, 0, 0, -1);
-// app.stage.addChild(sprite2);
-
-
-*/
 function reverseCoords(coord1, signX, signY, X, Y,width) {
     let coord=[];
     
@@ -93,24 +41,6 @@ function reverseCoords(coord1, signX, signY, X, Y,width) {
     return oldCoord;
 }
 PIXI.GRAPHICS_CURVES.minSegments = 50;
-
-/*
-for (var i = 0; i < curvyCoordsHori.length; i++) {
-    var b=curvyCoordsHori[i];
-    graphics.bezierCurveTo(b.cx1,b.cy1,b.cx2,b.cy2,b.ex,b.ey);
-}*/
-
-// graphics.endFill();
-/*
-for (var i = 0; i < curvyCoordsVert.length; i++) {
-    var b=curvyCoordsVert[i];
-    graphics.bezierCurveTo(b.cx1,b.cy1,b.cx2,b.cy2,b.ex,b.ey);
-}*/
-
-
-
-// graphics.moveTo(250,50);
-// sprite2.mask=graphics;
 
 function drawPuzzlePiece(matrixPiece, x, y, beginFill,width) {
     //! matrixPiece = [top,right,bottom,left]
@@ -167,35 +97,3 @@ function drawPuzzlePiece(matrixPiece, x, y, beginFill,width) {
 }
 //! matrixPiece = [top,right,bottom,left]
 
-var colors = [0xf8fc03, 0xDB3C23, 0x0303fc, 0xf8fc03]
-var anyPieces = [[0, 1, 1, 0], [1, 0, 0, 1], [0, 1, 1, 0]];
-for (var i = 1; i <= anyPieces.length; i++) {
-    var piece = anyPieces[i - 1];
-    // app.stage.addChild(drawPuzzlePiece(piece,i*100,i*100,colors[i],50));
-}
-// app.stage.addChild(drawPuzzlePiece([1,1, 1, 1],200,100,0xffffff,100));
-drawPuzzlePiece([1,1,0,0],100,200,0xffffff,50);
-// drawPuzzlePiece([1, 0, 0, 1], 300, 300, 0xf8fc03);
-// drawPuzzlePiece([1, 0, 0, 1], 400, 400, 0xf8fc03);
-
-/*
-app.stage.scale.x = 1;
-app.stage.scale.y = 1;
-var parasiteFix = new PIXI.Filter(null, `
-varying vec2 vTextureCoord;
-
-uniform sampler2D uSampler;
-
-void main(void)
-{
-    vec4 color = texture2D(uSampler, vTextureCoord);
-    if (color.a >= 0.5 && color.a < 1.0) {
-        color *= 1.0 / color.a;
-    }
-    gl_FragColor = color;
-}
-`);
-
-app.stage.filters = [parasiteFix];
-// mask.bezierCurveTo(p1, p2, p3);
-// sprite2.mask=mask;*/
