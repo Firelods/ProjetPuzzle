@@ -51,7 +51,7 @@ class Piece{
   }
 }
 
-let WIDTH=1200;
+let WIDTH=1300;
 let HEIGHT=900;
 let DIFFICULTE=200;
 
@@ -67,29 +67,127 @@ const container = new PIXI.Container();
 container.x=WIDTH;
 container.y=800;
 app.stage.addChild(container);
-
-
-
+var nbLignes = 2
+var nbColonnes =1
+var baseTexture=new PIXI.BaseTexture.from("1.png");
+var texture=new PIXI.Texture(baseTexture);
+var sprite2=new PIXI.Sprite(texture);
 for (var i=0; i<nbColonnes; i++){
     for (var j=0; j<nbLignes; j++){
-      var baseTexture=new PIXI.BaseTexture.from("1.png");
-      // console.log(i+" "+j);
-      var texture=new PIXI.Texture(baseTexture,new PIXI.Rectangle(j*DIFFICULTE,i*DIFFICULTE,DIFFICULTE,DIFFICULTE));
-      var sprite2=new PIXI.Sprite(texture);
-      sprite2.x=j*DIFFICULTE;
-      sprite2.y=i*DIFFICULTE;
-      sprite2.interactive = true;
-      puzzle.listPieces.push(new Piece(id,j*DIFFICULTE,i*DIFFICULTE,DIFFICULTE,sprite2,0,0,0,-1));
-      container.addChild(sprite2);
       
-      const rect = new PIXI.Graphics()
-        .lineStyle(5,0xff0000)
-        .drawRect(j*DIFFICULTE,i*DIFFICULTE, DIFFICULTE, DIFFICULTE);
-      app.stage.addChild(rect);
+      // console.log(i+" "+j);
+      // var texture=null;
+      // if (j==nbLignes-1){
+      //   console.log("i==nbColonnes-1");
+        // texture=new PIXI.Texture(baseTexture,new PIXI.Rectangle(j*DIFFICULTE,i*DIFFICULTE,DIFFICULTE,DIFFICULTE));
+      // }
+      // else{
+
+      //   texture=new PIXI.Texture(baseTexture,new PIXI.Rectangle(j*DIFFICULTE,i*DIFFICULTE,DIFFICULTE+(DIFFICULTE/WIDTH)*90,DIFFICULTE));
+      // }
+      
+      // sprite2.x=j*DIFFICULTE;
+      // sprite2.y=i*DIFFICULTE;
+      // puzzle.listPieces.push(new Piece(id,j*DIFFICULTE,i*DIFFICULTE,DIFFICULTE,sprite2,0,0,0,-1));
+      app.stage.addChild(sprite2);
+      var sidePiece=[];
+      if(j==0){
+        console.log(id);
+        if(i==0){
+          sidePiece=[0,1,1,0];
+        }
+        else if(i==nbColonnes-1){
+          sidePiece=[1,1,0,0];
+        }
+        else{
+          sidePiece=[1,1,1,0];
+          
+        }
+      }
+      else if(j==nbLignes-1){
+        if(i==0){
+          sidePiece=[0,0,1,1];
+        }
+        else if(i==nbColonnes-1){
+          sidePiece=[1,0,0,1];
+          console.log("test",id);
+        }
+        else{
+          sidePiece=[1,0,1,1];
+        }
+      }
+      else{
+        if(i==0){
+          sidePiece=[0,1,1,1];
+        }
+        else if(i==nbColonnes-1){
+          sidePiece=[1,1,0,1];
+        }
+        else{
+          sidePiece=[1,1,1,1];
+        }
+      }
+      console.log(sidePiece);
+      var graphics=drawPuzzlePiece(sidePiece,j*DIFFICULTE,i*DIFFICULTE,0xffffff,200);
+      // app.stage.addChild(graphics);
+      sprite2.mask=graphics;
+
+      let renderTexture = new PIXI.RenderTexture(new PIXI.BaseRenderTexture({width:1200,height:400}), {x: j*DIFFICULTE, y: i*DIFFICULTE, width: 200, height: 200});
+      app.renderer.render(sprite2,{renderTexture});
+      var newSprite=new PIXI.Sprite(renderTexture);
+      newSprite.x=100;
+      newSprite.y=100;
+      newSprite.tint=0xDB3C23;
+      newSprite.width=200;
+      newSprite.height=200;
+      // newSprite.interactive=true;
+      console.log(newSprite);
+      // app.stage.addChild(newSprite);
+      
+      
+      // sprite2.interactive = true;
+      // const rect = new PIXI.Graphics()
+      //   .lineStyle(5,0xff0000)
+      //   .drawRect(j*DIFFICULTE,i*DIFFICULTE, DIFFICULTE, DIFFICULTE);
+      // app.stage.addChild(rect);
       id++;
     }
   }
-console.log(puzzle.listPieces[1].x);
+
+  function zoom(s,x,y){
+ 
+    s = s > 0 ? 2 : 0.5;
+    var worldPos = {x: (x - app.stage.x) / app.stage.scale.x, y: (y - app.stage.y)/app.stage.scale.y};
+    var newScale = {x: app.stage.scale.x * s, y: app.stage.scale.y * s};
+    
+    var newScreenPos = {x: (worldPos.x ) * newScale.x + app.stage.x, y: (worldPos.y) * newScale.y + app.stage.y};
+  
+    app.stage.x -= (newScreenPos.x-x) ;
+    app.stage.y -= (newScreenPos.y-y) ;
+    app.stage.scale.x = newScale.x;
+    app.stage.scale.y = newScale.y;
+  };
+
+  var lastPos = null
+  $(document.getElementsByTagName("canvas")[0])
+    .mousewheel(function(e){
+    zoom(e.deltaY, e.offsetX, e.offsetY)
+  }).mousedown(function(e) {
+    lastPos = {x:e.offsetX,y:e.offsetY};
+  }).mouseup(function(event) {
+    lastPos = null;
+  }).mousemove(function(e){
+    if(lastPos) {
+      
+      app.stage.x += (e.offsetX-lastPos.x);
+      app.stage.y += (e.offsetY-lastPos.y);  
+      lastPos = {x:e.offsetX,y:e.offsetY};
+    }
+    
+  });
+
+/*
+  console.log(puzzle.listPieces[1].x);
 
 
 
@@ -156,15 +254,15 @@ function onDragMove(){
 }
 
 
-
-var rectSprite=PIXI.Sprite.from('sample.png');
-rectSprite.x=app.screen.width-rectSprite.width-400;
-rectSprite.y=app.screen.height-rectSprite.height-200;
-console.log(rectSprite.getGlobalPosition());
-app.stage.addChild(rectSprite);
-rectSprite.interactive=true;
-rectSprite.buttonMode=true;
-rectSprite.on('pointerdown',onClick);
+*/
+// var rectSprite=PIXI.Sprite.from('sample.png');
+// rectSprite.x=app.screen.width-rectSprite.width-400;
+// rectSprite.y=app.screen.height-rectSprite.height-200;
+// console.log(rectSprite.getGlobalPosition());
+// app.stage.addChild(rectSprite);
+// rectSprite.interactive=true;
+// rectSprite.buttonMode=true;
+// rectSprite.on('pointerdown',onClick);
 
 function onClick(){
   testWin();
@@ -188,7 +286,7 @@ function testWin(){
 // var texture=new PIXI.Texture(baseTexture,new PIXI.Rectangle(0,0,DIFFICULTE,DIFFICULTE));
 // var sprite2=new PIXI.Sprite.from(texture);
 // app.stage.addChild(sprite2);
-console.log(sprite2.width);
+// console.log(sprite2.width);
 
-app.stage.scale.x=0.5;
-app.stage.scale.y=0.5;
+app.stage.scale.x=1;
+app.stage.scale.y=1;
