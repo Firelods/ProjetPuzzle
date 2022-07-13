@@ -96,4 +96,10 @@ function drawPuzzlePiece(matrixPiece, x, y, beginFill,width) {
     return graphics;
 }
 //! matrixPiece = [top,right,bottom,left]
-
+var colorPuzzle=0x000000;
+function setColor(color) {
+    colorPuzzle =color;
+}
+function getColor(){
+    return colorPuzzle;
+}
