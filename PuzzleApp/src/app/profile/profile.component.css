@@ -1,0 +1,35 @@
+#globalContainer{
+    width:75%;
+    margin:0 auto;
+    background-color:rgb(92, 92, 92);
+    border-radius:10px;
+    margin-top:10%;
+    height:50vh;
+    display:flex;
+    flex-direction: column;
+    padding:5%;
+}
+.roundedInfos{
+    width:max-content;
+    background-color:rgb(168, 168, 168);
+    border-radius:20px;
+    /* font-size: 3em; */
+    height:max-content;
+    margin:10px;
+    padding:2em;
+}
+#infoAccount{
+    /* margin-right: 100%; */
+    margin:0 auto;
+    background-color: rgb(61, 197, 113);
+}
+#puzzleJoue{
+    font-size: 1.2em;
+    padding: 1.5em;
+}
+#lastConnected{
+    padding:1em;
+}
+#infoAccount p{
+    font-size: 2em;
+}

@@ -1,4 +1,4 @@
-
+console.log("etat du jeu : ");
 const app = new PIXI.Application({
 	autoResize: true,
   resolution: devicePixelRatio,
@@ -130,6 +130,7 @@ $(document.getElementsByTagName("canvas")[0])
   .mousewheel(function(e){
   zoom(e.deltaY, e.offsetX, e.offsetY)
 }).mousedown(function(e) {
+  app.renderer.backgroundColor=getColor();
   console.log(e.button);
   if (e.button==1){
     lastPos = {x:e.offsetX,y:e.offsetY};
@@ -261,6 +262,7 @@ function onClick(){
 
 function testWin(){
   var pieceOK=0;
+  
   for (var i=1; i<puzzle.listPieces.length; i++){
     if (puzzle.listPieces[i].x==puzzle.listPieces[i].originalX && puzzle.listPieces[i].y==puzzle.listPieces[i].originalY){
       pieceOK++;

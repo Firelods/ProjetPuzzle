@@ -33,7 +33,7 @@
     <header>
         <nav>
             <ul>
-                <li>Menu <ul id="sousListe"><li><input placeholder="couleur du plateau" type="text"></li></ul></li>
+                <li>Menu <ul id="sousListe"><li><input onkeydown="if (event.keyCode==13){setColor(this.value) }" placeholder="couleur du plateau" type="text"></li></ul></li>
                 <li>Statistiques</li>
                 <li>Profil</li>
             </ul>

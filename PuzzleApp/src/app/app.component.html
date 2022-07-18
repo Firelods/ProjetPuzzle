@@ -1,0 +1,15 @@
+<header>
+    <nav>
+        <p routerLink="/home">Puzzle Game</p>
+        <div>
+            <ul>
+                <li *ngIf="loginService.getUsername()">Bienvenue {{loginService.getUsername()}}</li>
+                <li><a routerLink="/profile">Mon Profil</a> </li>
+                <li><a href="#">Statistiques</a> </li>
+            </ul>
+        </div>
+    </nav>
+  </header>
+<main>
+<router-outlet></router-outlet>  </main>
+
