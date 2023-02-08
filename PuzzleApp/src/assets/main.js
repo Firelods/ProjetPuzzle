@@ -28,10 +28,8 @@ function startGame() {
     resolution: devicePixelRatio,
     backgroundColor: 0x000000
   });
-  console.log(document.getElementById("parentPuzzle"));
   document.getElementById("parentPuzzle").appendChild(app.view);
   window.addEventListener('resize', resize);
-
   function resize() {
     let parent = document.getElementById("parentPuzzle");
     app.renderer.resize(parent.clientWidth, parent.clientHeight);
@@ -44,33 +42,24 @@ function startGame() {
 
   var nbLignes = Math.floor(WIDTH / DIFFICULTE);
   var nbColonnes = Math.floor(HEIGHT / DIFFICULTE);
-  // TODO Finir le projet
-  let sprite = PIXI.Sprite.from("https://i.ibb.co/GHhbf1b/1.png");
-  console.log(sprite.getGlobalPosition());
   var puzzle = new Puzzle();
-  var id = 1;
 
   const container = new PIXI.Container();
 
   app.stage.addChild(container);
   // var nbLignes = 2
   // var nbColonnes = 2
-  var baseTexture = new PIXI.BaseTexture.from("1.png");
-  console.log(nbColonnes);
-  console.log(nbLignes);
+  var baseTexture = PIXI.BaseTexture.from("https://i.imgur.com/swNh1LB.png");
   for (var i = 0; i < nbColonnes; i++) {
     for (var j = 0; j < nbLignes - 1; j++) {
-      // console.log(i,j);
       var sidePiece = getSidePiece(i, j, nbColonnes, nbLignes);
       if (j < nbLignes - 1) {
         var texture = new PIXI.Texture(baseTexture, new PIXI.Rectangle((j * (DIFFICULTE)) - 60, (i * (DIFFICULTE)) - 60, DIFFICULTE + 60, DIFFICULTE + 60));
       } else {
-        console.log("test");
         var texture = new PIXI.Texture(baseTexture, new PIXI.Rectangle((j * (DIFFICULTE)), (i * (DIFFICULTE)) - 60, DIFFICULTE / 2, DIFFICULTE + 60));
       }
       var sprite2 = new PIXI.Sprite(texture);
       container.addChild(sprite2);
-
       var graphics = drawPuzzlePiece(sidePiece, 0, 0, 0xffffff, DIFFICULTE);
       graphics.zIndex = 10;
       graphics.x = 40;
@@ -86,7 +75,6 @@ function startGame() {
       id++;
     }
   }
-  console.log(puzzle.listPieces);
   var containerPuzzle = new PIXI.Container();
   var rect = new PIXI.Graphics();
   rect.lineStyle(10, 0xFF0000);
@@ -116,7 +104,7 @@ function startGame() {
       console.log("Déplacé");
       console.log(puzzle.listPieces[id]);
     });
-    puzzle.listPieces[id].sprite.on('pointerupoutside', onDragEnd);
+    // puzzle.listPieces[id].sprite.on('pointerupoutside', onDragEnd);
     puzzle.listPieces[id].sprite.on('pointermove', onDragMove);
     // console.log(i);
   }
@@ -203,28 +191,34 @@ function startGame() {
     });
 
   function onDragStart(event) {
+    this.event = event;
     this.data = event.data;
     this.alpha = 0.9;
     this.dragging = true;
+
   }
 
   function onDragEnd() {
     this.alpha = 1;
     this.dragging = false;
+    this.zIndex = 1;
     if (this.data != null) {
-      var newPosition = this.data.getLocalPosition(this.parent);
-      this.x = Math.floor((newPosition.x - 10) / DIFFICULTE) * DIFFICULTE;
-      this.y = Math.floor((newPosition.y - 10) / DIFFICULTE) * DIFFICULTE;
+      this.x = (Math.floor((this.x - 10) / DIFFICULTE) + 1) * DIFFICULTE;
+      this.y = (Math.floor((this.y - 10) / DIFFICULTE) + 1) * DIFFICULTE;
     }
-    testWin();
     this.data = null;
   }
 
   function onDragMove() {
     if (this.dragging) {
-      var newPosition = this.data.getLocalPosition(this.parent);
-      this.x = newPosition.x - 100;
-      this.y = newPosition.y - 100;
+      // make this.global in relation with parent local
+      var x = this.event.data.global.x - this.event.target.width / (2 / app.stage.scale.x);
+      var y = this.event.data.global.y - this.event.target.height / (2 / app.stage.scale.y);
+      var point = new PIXI.Point(x, y);
+      this.position = this.parent.toLocal(point);
+      // make the target up to the top on the others*
+      this.zIndex = 10000;
+      this.parent.children.sort((a, b) => a.zIndex - b.zIndex);
     }
   }
 
@@ -282,7 +276,7 @@ function startGame() {
       // console.log(puzzle.listPieces[i]);
     }
     console.log("pieceOK = " + pieceOK);
-    if (pieceOK+1 == puzzle.listPieces.length - 1) {
+    if (pieceOK + 1 == puzzle.listPieces.length - 1) {
       console.log("Gagné");
       //TODO Connexion a la bdd pour incrémenter le nb de puzzle fait
     }
@@ -293,104 +287,104 @@ function startGame() {
 
     if (coord1 == "hori") {
       coord = [{
-          cx1: 0,
-          cy1: 0,
-          cx2: 35,
-          cy2: 15,
-          ex: 37,
-          ey: 5
-        },
-        {
-          cx1: 37,
-          cy1: 5,
-          cx2: 40,
-          cy2: 0,
-          ex: 38,
-          ey: -5
-        },
-        {
-          cx1: 38,
-          cy1: -5,
-          cx2: 20,
-          cy2: -20,
-          ex: 50,
-          ey: -20
-        },
-        {
-          cx1: 50,
-          cy1: -20,
-          cx2: 80,
-          cy2: -20,
-          ex: 62,
-          ey: -5
-        },
-        {
-          cx1: 62,
-          cy1: -5,
-          cx2: 60,
-          cy2: 0,
-          ex: 63,
-          ey: 5
-        },
-        {
-          cx1: 63,
-          cy1: 5,
-          cx2: 65,
-          cy2: 15,
-          ex: 100,
-          ey: 0
-        },
+        cx1: 0,
+        cy1: 0,
+        cx2: 35,
+        cy2: 15,
+        ex: 37,
+        ey: 5
+      },
+      {
+        cx1: 37,
+        cy1: 5,
+        cx2: 40,
+        cy2: 0,
+        ex: 38,
+        ey: -5
+      },
+      {
+        cx1: 38,
+        cy1: -5,
+        cx2: 20,
+        cy2: -20,
+        ex: 50,
+        ey: -20
+      },
+      {
+        cx1: 50,
+        cy1: -20,
+        cx2: 80,
+        cy2: -20,
+        ex: 62,
+        ey: -5
+      },
+      {
+        cx1: 62,
+        cy1: -5,
+        cx2: 60,
+        cy2: 0,
+        ex: 63,
+        ey: 5
+      },
+      {
+        cx1: 63,
+        cy1: 5,
+        cx2: 65,
+        cy2: 15,
+        ex: 100,
+        ey: 0
+      },
       ];
       // console.log(coord);
     } else if (coord1 == "vert") {
       coord = [{
-          cx1: 0,
-          cy1: 0,
-          cx2: 15,
-          cy2: 35,
-          ex: 5,
-          ey: 37
-        }, // left shoulder
-        {
-          cx1: 5,
-          cy1: 37,
-          cx2: 0,
-          cy2: 40,
-          ex: -5,
-          ey: 38
-        }, // left neck
-        {
-          cx1: -5,
-          cy1: 38,
-          cx2: -20,
-          cy2: 20,
-          ex: -20,
-          ey: 50
-        }, // left head
-        {
-          cx1: -20,
-          cy1: 50,
-          cx2: -20,
-          cy2: 80,
-          ex: -5,
-          ey: 62
-        }, // right head
-        {
-          cx1: -5,
-          cy1: 62,
-          cx2: 0,
-          cy2: 60,
-          ex: 5,
-          ey: 63
-        }, // right neck
-        {
-          cx1: 5,
-          cy1: 63,
-          cx2: 15,
-          cy2: 65,
-          ex: 0,
-          ey: 100
-        }, // right shoulder
+        cx1: 0,
+        cy1: 0,
+        cx2: 15,
+        cy2: 35,
+        ex: 5,
+        ey: 37
+      }, // left shoulder
+      {
+        cx1: 5,
+        cy1: 37,
+        cx2: 0,
+        cy2: 40,
+        ex: -5,
+        ey: 38
+      }, // left neck
+      {
+        cx1: -5,
+        cy1: 38,
+        cx2: -20,
+        cy2: 20,
+        ex: -20,
+        ey: 50
+      }, // left head
+      {
+        cx1: -20,
+        cy1: 50,
+        cx2: -20,
+        cy2: 80,
+        ex: -5,
+        ey: 62
+      }, // right head
+      {
+        cx1: -5,
+        cy1: 62,
+        cx2: 0,
+        cy2: 60,
+        ex: 5,
+        ey: 63
+      }, // right neck
+      {
+        cx1: 5,
+        cy1: 63,
+        cx2: 15,
+        cy2: 65,
+        ex: 0,
+        ey: 100
+      }, // right shoulder
       ];
     }
 

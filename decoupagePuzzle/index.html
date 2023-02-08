@@ -1,44 +1,64 @@
 <!DOCTYPE html>
 <html lang="fr">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://pixijs.download/release/pixi.js"></script>
-    <script src="./decoupagePuzzle.js"></script>
-    <script data-require="jquery@*" data-semver="2.1.4" src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script data-require="jquery-mousewheel@*" data-semver="3.1.13"
-        src="http://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/zoomooz/1.1.6/jquery.zoomooz.min.js"
-        integrity="sha512-AjArtM7mKvqtbUJTylYXhk5TUfmK1o6aikn3HmkbuYlq+g5vcuzGGZhIsx7ZDHF9wMXjF7bLWoOTRQlW8O5i4Q=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/screenfull.js/5.1.0/screenfull.min.js"
-        integrity="sha512-SGPHIoS+NsP1NUL5RohNpDs44JlF36tXLN6H3Cw+EUyenEc5zPXWqfw9D+xmvR00QYUYewQIJQ6P5yH82Vw6Fg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+      data-require="jquery@*"
+      data-semver="2.1.4"
+      src="http://code.jquery.com/jquery-2.1.4.min.js"
+    ></script>
+    <script
+      data-require="jquery-mousewheel@*"
+      data-semver="3.1.13"
+      src="http://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/zoomooz/1.1.6/jquery.zoomooz.min.js"
+      integrity="sha512-AjArtM7mKvqtbUJTylYXhk5TUfmK1o6aikn3HmkbuYlq+g5vcuzGGZhIsx7ZDHF9wMXjF7bLWoOTRQlW8O5i4Q=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/screenfull.js/5.1.0/screenfull.min.js"
+      integrity="sha512-SGPHIoS+NsP1NUL5RohNpDs44JlF36tXLN6H3Cw+EUyenEc5zPXWqfw9D+xmvR00QYUYewQIJQ6P5yH82Vw6Fg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <link rel="stylesheet" href="./main.css" />
     <title>Puzzle En FR !</title>
-</head>
+  </head>
 
-
-
-
-
-
-<body>
+  <body>
     <script type="module" src="./main.js"></script>
     <script src="./fonc.js"></script>
-    <div id="parentPuzzle"></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io.connect();
+    </script>
     <header>
-        <nav>
-            <ul>
-                <li>Menu <ul id="sousListe"><li><input onkeydown="if (event.keyCode==13){setColor(this.value) }" placeholder="couleur du plateau" type="text"></li></ul></li>
-                <li>Statistiques</li>
-                <li>Profil</li>
+      <nav>
+        <ul>
+          <li>
+            Menu
+            <ul id="sousListe">
+              <li>
+                <input
+                  onkeydown="if (event.keyCode==13){setColor(this.value) }"
+                  placeholder="couleur du plateau"
+                  type="text"
+                />
+              </li>
             </ul>
-        </nav>
+          </li>
+          <li>Statistiques</li>
+          <li>Profil</li>
+        </ul>
+      </nav>
     </header>
-</body>
-
+    <div id="parentPuzzle"></div>
+  </body>
 </html>

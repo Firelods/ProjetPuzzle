@@ -5,10 +5,10 @@
 
 #parentPuzzle {
   width: 100vw;
-  height: 100vh;
-  position: absolute;
-  overflow: hidden;
-  background-color: grey;
+  /* height: 100vh; */
+  /* position: absolute;
+  overflow: hidden; */
+  /* background-color: grey; */
 }
 
 body {
@@ -21,43 +21,41 @@ canvas {
   display: block;
 }
 
-header{
+header {
   position: absolute;
   z-index: 88;
-  width:100vw;
+  width: 100vw;
   height: 6vh;
-  display:flex;
+  display: flex;
   justify-content: center;
-  
 }
 
-nav{
-  
+nav {
   width: 75vw;
   background-color: rgba(253, 6, 6, 0.8);
   border-bottom: 1px solid black;
-  border-radius:0px 0px 20px 20px;
-  display:flex;
+  border-radius: 0px 0px 20px 20px;
+  display: flex;
   justify-content: center;
 }
 
-nav ul{
+nav ul {
   list-style: none;
-  display:flex;
+  display: flex;
 }
 
-nav>ul li{
-  height:50%;
-  padding:5px;
+nav > ul li {
+  height: 50%;
+  padding: 5px;
   background-color: rgba(245, 238, 238, 0.8);
   border-radius: 10px;
 }
 
-#sousListe{
-  display:none;
+#sousListe {
+  display: none;
 }
 
-li:hover>#sousListe{
-  position:absolute;
-  display:flex;
+li:hover > #sousListe {
+  position: absolute;
+  display: flex;
 }
