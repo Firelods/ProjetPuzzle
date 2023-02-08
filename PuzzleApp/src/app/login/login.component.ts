@@ -26,6 +26,9 @@ export class LoginComponent implements OnInit {
     if (!this.loginForm.valid) {
       return;
     }
+    if(this.loginForm.value.username=="antoine"){
+      alert("!! Ratz aren't allowed !!")
+    }
     this.loginService.login(this.loginForm.value.username, this.loginForm.value.password);
     this.router.navigate(['/home']);
   }

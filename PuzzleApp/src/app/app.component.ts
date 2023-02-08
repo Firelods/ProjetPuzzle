@@ -10,6 +10,8 @@ import { LoginService } from './login.service';
 })
 export class AppComponent {
   title = 'PuzzleApp';
-  constructor(public loginService: LoginService) { }
+  constructor(public loginService: LoginService) { 
+    
+  }
 
 }
