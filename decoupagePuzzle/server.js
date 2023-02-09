@@ -16,13 +16,16 @@ app.get('/', function (req, res, next) {
 io.on('connection', function (client) {
   //when the server receives clicked message, do this
   console.log('Client connected...');
-  console.log(client);
   client.on('movePiece', function (data) {
     clickCount++;
     console.log(data);
     //send a message to ALL connected clients
     console.log('clickCount: ' + clickCount);
     io.emit('buttonUpdate', clickCount);
+  });
+  client.on('mousemove', function (data) {
+    // send a message to ALL connected clients
+    io.emit('moving', { position: data, name: client.id });
   });
 });
 

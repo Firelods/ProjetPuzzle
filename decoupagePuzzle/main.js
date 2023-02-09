@@ -471,3 +471,25 @@ $(document.getElementsByTagName("canvas")[0])
       }
     }
   });
+
+
+// event on mouse move to send cursor position to server
+$("#parentPuzzle").mousemove(function (e) {
+  socket.emit('mousemove', {
+    x: e.pageX,
+    y: e.pageY
+  });
+});
+// event on mouse position received from server
+socket.on('moving', function (data) {
+  const idSocket = socket.id;
+  if (data.name == idSocket) return;
+  else {
+    var cursor = document.getElementById("cursor");
+    cursor.className = data.name;
+    cursor.style.left = data.position.x + "px";
+    cursor.style.top = data.position.y + "px";
+  }
+
+
+});

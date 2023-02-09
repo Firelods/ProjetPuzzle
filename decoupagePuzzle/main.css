@@ -5,7 +5,7 @@
 
 #parentPuzzle {
   width: 100vw;
-  /* height: 100vh; */
+  height: 90vh;
   /* position: absolute;
   overflow: hidden; */
   /* background-color: grey; */
@@ -58,4 +58,16 @@ nav > ul li {
 li:hover > #sousListe {
   position: absolute;
   display: flex;
+}
+
+#cursor {
+  position: absolute;
+  z-index: 99;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(94, 255, 0, 0.459);
+  border-radius: 50%;
+  left: 0;
+  top: 0;
+  /* display: none; */
 }
