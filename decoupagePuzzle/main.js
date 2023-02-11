@@ -236,6 +236,14 @@ class Game {
     sprite.originalX = originalX;
     sprite.originalY = originalY;
     sprite.containerPuzzle = containerPuzzle;
+    if (sprite.snappedPiece == null) {
+      sprite.snappedPiece = {
+        left: null,
+        right: null,
+        top: null,
+        bottom: null,
+      };
+    }
   }
 
   onDragEnd(sprite, event) {
@@ -254,26 +262,76 @@ class Game {
         // On fait attention à la position du container
         this.x = this.originalX + this.containerPuzzle.x; // on snap à la position originale
         this.y = this.originalY + this.containerPuzzle.y;
+        // si la pièce possède une pièce sur un de ses côtés on la déplace avec
+        if (this.snappedPiece.left != null) {
+          this.snappedPiece.left.x = this.x - this.DIFFICULTE;
+          this.snappedPiece.left.y = this.y;
+          // recurisvely move the pieces that are snapped to this one
+          var piece = this.snappedPiece.left;
+          while (piece.snappedPiece.left != null) {
+            console.log(" test while snap");
+            piece = piece.snappedPiece.left;
+            piece.x = piece.x - this.DIFFICULTE;
+            piece.y = piece.y;
+          }
+        }
+        if (this.snappedPiece.right != null) {
+          this.snappedPiece.right.x = this.x + this.DIFFICULTE;
+          this.snappedPiece.right.y = this.y;
+
+          // recurisvely move the pieces that are snapped to this one
+          var piece = this.snappedPiece.right;
+          while (piece.snappedPiece.right != null) {
+            piece = piece.snappedPiece.right;
+            piece.x = piece.x + this.DIFFICULTE;
+            piece.y = piece.y;
+          }
+        }
+        if (this.snappedPiece.top != null) {
+          this.snappedPiece.top.x = this.x;
+          this.snappedPiece.top.y = this.y - this.DIFFICULTE;
+
+          // recurisvely move the pieces that are snapped to this one
+          var piece = this.snappedPiece.top;
+          while (piece.snappedPiece.top != null) {
+            piece = piece.snappedPiece.top;
+            piece.x = piece.x;
+            piece.y = piece.y - this.DIFFICULTE;
+          }
+        }
+        if (this.snappedPiece.bottom != null) {
+          this.snappedPiece.bottom.x = this.x;
+          this.snappedPiece.bottom.y = this.y + this.DIFFICULTE;
+
+          // recurisvely move the pieces that are snapped to this one
+          var piece = this.snappedPiece.bottom;
+          while (piece.snappedPiece.bottom != null) {
+            piece = piece.snappedPiece.bottom;
+            piece.x = piece.x;
+            piece.y = piece.y + this.DIFFICULTE;
+          }
+        }
+
+        return;
       }
       //TODO : ajouter un système de snap pour les pièces entre elles
       // search for a piece to snap to
       for (var i = 0; i < this.parent.children.length; i++) {
         if (this.parent.children[i] != this) {
           var otherPiece = this.parent.children[i];
-          // otherPiece.originalX is the piece's position in the puzzle
-          // otherPiece.x is the piece's position on the screen
+
           // check if the piece is an adjacent piece of this piece in the puzzle
           if (
             otherPiece.originalX == this.originalX + this.DIFFICULTE &&
             otherPiece.originalY == this.originalY
           ) {
-            console.log(otherPiece);
-            console.log("the piece is on the right");
             // check if the piece is within 100px of the other piece
             if (Math.abs(otherPiece.x - this.DIFFICULTE - this.x) < 100) {
-              console.log("snap");
               this.x = otherPiece.x - this.DIFFICULTE;
               this.y = otherPiece.y;
+              this.snappedPiece.right = otherPiece;
+              otherPiece.snappedPiece.left = this;
+              break;
             }
           }
 
@@ -281,37 +339,40 @@ class Game {
             otherPiece.originalX == this.originalX - this.DIFFICULTE &&
             otherPiece.originalY == this.originalY
           ) {
-            console.log(otherPiece);
-            console.log("the piece is on the left");
             // check if the piece is within 100px of the other piece
             if (Math.abs(otherPiece.x + this.DIFFICULTE - this.x) < 100) {
-              console.log("snap");
               this.x = otherPiece.x + this.DIFFICULTE;
               this.y = otherPiece.y;
+              // remember the piece we snapped to so we can move both pieces together
+              this.snappedPiece.left = otherPiece;
+              otherPiece.snappedPiece.right = this;
+              break;
             }
           }
           if (
             otherPiece.originalX == this.originalX &&
             otherPiece.originalY == this.originalY + this.DIFFICULTE
           ) {
-            console.log(otherPiece);
-            console.log("the piece is on the bottom");
             // check if the piece is within 100px of the other piece
             if (Math.abs(otherPiece.y + this.DIFFICULTE - this.y) < 100) {
               this.x = otherPiece.x;
               this.y = otherPiece.y + this.DIFFICULTE;
+              this.snappedPiece.bottom = otherPiece;
+              otherPiece.snappedPiece.top = this;
+              break;
             }
           }
           if (
             otherPiece.originalX == this.originalX &&
             otherPiece.originalY == this.originalY - this.DIFFICULTE
           ) {
-            console.log(otherPiece);
-            console.log("the piece is on the top");
             // check if the piece is within 100px of the other piece
             if (Math.abs(otherPiece.y - this.DIFFICULTE - this.y) < 100) {
               this.x = otherPiece.x;
               this.y = otherPiece.y - this.DIFFICULTE;
+              this.snappedPiece.top = otherPiece;
+              otherPiece.snappedPiece.bottom = this;
+              break;
             }
           }
         }
@@ -322,6 +383,54 @@ class Game {
 
   onDragMove() {
     if (this.dragging) {
+      // if we have a snapped piece, move both pieces together
+      if (this.snappedPiece.left) {
+        // move all the pieces that are snapped to this one to the left
+        var piece = this;
+        while (piece.snappedPiece.left != null) {
+          console.log(piece);
+          piece = piece.snappedPiece.left;
+          piece.x = piece.x - this.DIFFICULTE;
+          // TODO : fix le bug de la piece qui se décale trop à gauche
+          piece.y = piece.y;
+        }
+      }
+      if (this.snappedPiece.right) {
+        // this.snappedPiece.right.x = this.x + this.DIFFICULTE;
+        // this.snappedPiece.right.y = this.y;
+        // // recurisvely move the pieces that are snapped to this one
+        // var piece = this.snappedPiece.right;
+        // while (piece.snappedPiece.right != null) {
+        //   piece = piece.snappedPiece.right;
+        //   piece.x = piece.x + this.DIFFICULTE;
+        //   piece.y = piece.y;
+        // }
+      }
+      if (this.snappedPiece.top) {
+        this.snappedPiece.top.x = this.x;
+        this.snappedPiece.top.y = this.y - this.DIFFICULTE;
+
+        // recurisvely move the pieces that are snapped to this one
+        var piece = this.snappedPiece.top;
+        while (piece.snappedPiece.top != null) {
+          piece = piece.snappedPiece.top;
+          piece.x = piece.x;
+          piece.y = piece.y - this.DIFFICULTE;
+        }
+      }
+      if (this.snappedPiece.bottom) {
+        this.snappedPiece.bottom.x = this.x;
+        this.snappedPiece.bottom.y = this.y + this.DIFFICULTE;
+
+        // recurisvely move the pieces that are snapped to this one
+        var piece = this.snappedPiece.bottom;
+        while (piece.snappedPiece.bottom != null) {
+          piece = piece.snappedPiece.bottom;
+          piece.x = piece.x;
+          piece.y = piece.y + this.DIFFICULTE;
+        }
+      }
+
       var x =
         this.event.data.global.x -
         this.event.target.width / (2 / this.app.stage.scale.x); //! On fait attention à la taille de l'image, qui est divisée par le scale de l'app
